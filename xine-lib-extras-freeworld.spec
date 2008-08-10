@@ -3,10 +3,10 @@
 
 %define abiver  1.21
 
-Name:           xine-lib-extras-nonfree
+Name:           xine-lib-extras-freeworld
 Summary:        Non-free extra codecs for the Xine library
 Version:        1.1.12
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -36,6 +36,14 @@ BuildConflicts: libfame-devel
 
 Requires:       vcdimager >= 0.7.23
 Requires:       xine-lib(plugin-abi) = %{abiver}
+
+# obsolete old livna package
+Provides:       xine-lib-extras-nonfree = %{version}-%{release}
+Obsoletes:      xine-lib-extras-nonfree < 1.1.12-2
+
+# obsolete old frehsrpms package
+Provides:       xine-lib-moles = %{version}-%{release}
+Obsoletes:      xine-lib-moles < 1.1.12-2
 
 %description
 This package adds extra functionality to the Xine library. Those
@@ -164,6 +172,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Aug 10 2008 Thorsten Leemhuis <fedora at leemhuis.info> - 1.1.12-2
+- rename to xine-lib-extras-freeworld
+- add provides and obsoletes for packages from livna and freshrpms
+
 * Wed Apr 16 2008 Ville Skyttä <ville.skytta at iki.fi> - 1.1.12-1
 - 1.1.12.
 
