@@ -1,12 +1,12 @@
 # TODO:
 # - external dvdnav - not compatible as of 1.1.11 and 4.1.1
 
-%define abiver  1.21
+%define abiver  1.24
 
 Name:           xine-lib-extras-freeworld
 Summary:        Non-free extra codecs for the Xine library
-Version:        1.1.12
-Release:        2%{?dist}
+Version:        1.1.15
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -19,7 +19,6 @@ BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
 # External libs
-BuildRequires:  xvidcore-devel
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
@@ -172,6 +171,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Aug 18 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-1
+- 1.1.15
+
 * Sun Aug 10 2008 Thorsten Leemhuis <fedora at leemhuis.info> - 1.1.12-2
 - rename to xine-lib-extras-freeworld
 - add provides and obsoletes for packages from livna and freshrpms
