@@ -6,14 +6,14 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Non-free extra codecs for the Xine library
 Version:        1.1.15
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
 Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz2
 Patch0:         xine-lib-1.1.3-optflags.patch
 Patch6:         xine-lib-1.1.1-deepbind-939.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
@@ -38,9 +38,9 @@ Requires:       xine-lib(plugin-abi) = %{abiver}
 
 # obsolete old livna package
 Provides:       xine-lib-extras-nonfree = %{version}-%{release}
-Obsoletes:      xine-lib-extras-nonfree < 1.1.12-2
+Obsoletes:      xine-lib-extras-nonfree < 1.1.15-2
 
-# obsolete old frehsrpms package
+# obsolete old freshrpms package
 Provides:       xine-lib-moles = %{version}-%{release}
 Obsoletes:      xine-lib-moles < 1.1.12-2
 
@@ -63,7 +63,8 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
 
 %build
 # Keep order of options the same as in ./configure --help for easy maintenance
-%configure --disable-dependency-tracking \
+%configure \
+    --disable-dependency-tracking \
     --with-external-ffmpeg \
     --enable-ipv6 \
     --disable-opengl \
@@ -93,15 +94,15 @@ make %{?_smp_mflags}
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot}
 
 # Removing useless files
-rm -rf $RPM_BUILD_ROOT%{_bindir}
-rm -rf $RPM_BUILD_ROOT%{_includedir}
-rm -rf $RPM_BUILD_ROOT%{_datadir}
-rm -rf $RPM_BUILD_ROOT%{_libdir}/lib*
-rm -rf $RPM_BUILD_ROOT%{_libdir}/pkgconfig
+rm -rf %{buildroot}%{_bindir}
+rm -rf %{buildroot}%{_includedir}
+rm -rf %{buildroot}%{_datadir}
+rm -rf %{buildroot}%{_libdir}/lib*
+rm -rf %{buildroot}%{_libdir}/pkgconfig
 
 # Plugins - credits go to the SuSE RPM maintainer, congrats
 cat > plugins << EOF
@@ -150,7 +151,7 @@ post/xineplug_post_tvtime
 #
 EOF
 
-DIR="$(ls -1d $RPM_BUILD_ROOT%{_libdir}/xine/plugins/*)"
+DIR="$(ls -1d %{buildroot}%{_libdir}/xine/plugins/*)"
 mv $DIR $DIR.temp
 mkdir -p $DIR/post
 grep -v ^# plugins | while read i; do
@@ -160,7 +161,7 @@ rm -rf $DIR.temp
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %files
@@ -171,6 +172,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Sep 04 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-2
+- bump Obsoletes: xine-lib-extras-nonfree
+- spec cosmetics
+
 * Mon Aug 18 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-1
 - 1.1.15
 
