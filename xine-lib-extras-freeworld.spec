@@ -3,6 +3,10 @@
 
 %define abiver  1.24
 
+%if 0%{?fedora} > 6
+%define _with_external_ffmpeg --with-external-ffmpeg
+%endif
+
 Name:           xine-lib-extras-freeworld
 Summary:        Non-free extra codecs for the Xine library
 Version:        1.1.15
@@ -19,7 +23,7 @@ BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
 # External libs
-BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
+%{?_with_external_ffmpeg:BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804}
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
 BuildRequires:  libdca-devel
@@ -65,7 +69,6 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
 # Keep order of options the same as in ./configure --help for easy maintenance
 %configure \
     --disable-dependency-tracking \
-    --with-external-ffmpeg \
     --enable-ipv6 \
     --disable-opengl \
     --disable-xvmc \
@@ -85,7 +88,7 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
     --disable-gnomevfs \
     --disable-gdkpixbuf \
     --disable-samba \
-    --with-external-ffmpeg \
+    %{?_with_external_ffmpeg} \
     --with-external-a52dec \
     --with-external-libmad \
     --with-external-libdts
