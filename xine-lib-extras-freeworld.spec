@@ -3,10 +3,14 @@
 
 %define abiver  1.24
 
+%if 0%{?fedora} > 6
+%define _with_external_ffmpeg --with-external-ffmpeg
+%endif
+
 Name:           xine-lib-extras-freeworld
-Summary:        Non-free extra codecs for the Xine library
+Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.15
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -19,7 +23,7 @@ BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
 # External libs
-BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
+%{?_with_external_ffmpeg:BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804}
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
 BuildRequires:  libdca-devel
@@ -45,8 +49,10 @@ Provides:       xine-lib-moles = %{version}-%{release}
 Obsoletes:      xine-lib-moles < 1.1.12-2
 
 %description
-This package adds extra functionality to the Xine library. Those
-plugins may contain patented code.
+This package contains extra codecs for the Xine multimedia library.  These
+are free and opensource but left out of the official Fedora repository for 
+one reason or another.  Once installed, applications using the xine library
+will automatically regcognize and use these additional codecs.
 
 
 %prep
@@ -65,7 +71,6 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
 # Keep order of options the same as in ./configure --help for easy maintenance
 %configure \
     --disable-dependency-tracking \
-    --with-external-ffmpeg \
     --enable-ipv6 \
     --disable-opengl \
     --disable-xvmc \
@@ -85,7 +90,7 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
     --disable-gnomevfs \
     --disable-gdkpixbuf \
     --disable-samba \
-    --with-external-ffmpeg \
+    %{?_with_external_ffmpeg} \
     --with-external-a52dec \
     --with-external-libmad \
     --with-external-libdts
@@ -172,6 +177,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Sep 25 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-3
+- drop "nonfree" verbage from summary/description
+
 * Thu Sep 04 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-2
 - bump Obsoletes: xine-lib-extras-nonfree
 - spec cosmetics
