@@ -8,9 +8,9 @@
 %endif
 
 Name:           xine-lib-extras-freeworld
-Summary:        Non-free extra codecs for the Xine library
+Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.15
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -49,8 +49,10 @@ Provides:       xine-lib-moles = %{version}-%{release}
 Obsoletes:      xine-lib-moles < 1.1.12-2
 
 %description
-This package adds extra functionality to the Xine library. Those
-plugins may contain patented code.
+This package contains extra codecs for the Xine multimedia library.  These
+are free and opensource but left out of the official Fedora repository for 
+one reason or another.  Once installed, applications using the xine library
+will automatically regcognize and use these additional codecs.
 
 
 %prep
@@ -175,6 +177,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Sep 25 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-3
+- drop "nonfree" verbage from summary/description
+
 * Thu Sep 04 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-2
 - bump Obsoletes: xine-lib-extras-nonfree
 - spec cosmetics
