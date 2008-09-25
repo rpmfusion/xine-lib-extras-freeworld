@@ -10,7 +10,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.15
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -46,7 +46,7 @@ Obsoletes:      xine-lib-extras-nonfree < 1.1.15-2
 
 # obsolete old freshrpms package
 Provides:       xine-lib-moles = %{version}-%{release}
-Obsoletes:      xine-lib-moles < 1.1.12-2
+Obsoletes:      xine-lib-moles < 1.1.15-2
 
 %description
 This package contains extra codecs for the Xine multimedia library.  These
@@ -177,6 +177,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Sep 25 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-4
+- Obsoletes: xine-lib-moles < 1.1.15-2
+
 * Thu Sep 25 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-3
 - drop "nonfree" verbage from summary/description
 
