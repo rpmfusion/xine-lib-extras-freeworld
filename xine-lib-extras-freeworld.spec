@@ -22,8 +22,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
-# External libs
-%{?_with_external_ffmpeg:BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804}
+# libraw1394-devel to workaround missing deps in ffmpeg-devel 
+%{?_with_external_ffmpeg:BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804, libraw1394-devel}
+
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
 BuildRequires:  libdca-devel
