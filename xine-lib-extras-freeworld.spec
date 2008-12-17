@@ -25,7 +25,7 @@ BuildRequires:  gawk
 %if 0%{?_with_external_ffmpeg:1}
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
 # HACKS to workaround missing deps in ffmpeg-devel
-BuildRequires: libraw1394-devel libtheora-devel libvorbis-devel
+BuildRequires:  dirac-devel libraw1394-devel libtheora-devel libvorbis-devel
 %endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
