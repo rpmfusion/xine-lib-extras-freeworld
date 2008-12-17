@@ -19,7 +19,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0: xine-lib-1.1.3-optflags.patch
 Patch6: xine-lib-1.1.1-deepbind-939.patch
-Patch100: xine-lib-1.1.15-ffmpeg-bits_per_sample.patch
+Patch100: xine-lib-1.1.15-ffmpeg-api.patch
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
@@ -27,7 +27,7 @@ BuildRequires:  gawk
 %if 0%{?_with_external_ffmpeg:1}
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
 # HACKS to workaround missing deps in ffmpeg-devel
-BuildRequires:  dirac-devel libraw1394-devel libtheora-devel libvorbis-devel
+# BuildRequires:  dirac-devel libraw1394-devel libtheora-devel libvorbis-devel
 %endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
@@ -67,8 +67,8 @@ touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
 # Patch1 needed at least when compiling with external ffmpeg, #939.
 %patch6 -p1 -b .deepbind
-# ffmpeg api: bits_per_sample->bits_per_coded_sample
-%patch100 -p1 -b .ffmpeg_bits_per_sample
+# ffmpeg api
+%patch100 -p1 -b .ffmpeg_api
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
