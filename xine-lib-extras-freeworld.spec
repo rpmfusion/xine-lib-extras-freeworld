@@ -10,7 +10,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.15
-Release:        4%{?dist}
+Release:        5%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -177,6 +177,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Dec 17 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-5
+- respin
+
 * Thu Sep 25 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-4
 - Obsoletes: xine-lib-moles < 1.1.15-2
 
