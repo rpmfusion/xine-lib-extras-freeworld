@@ -22,9 +22,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
-# libraw1394-devel to workaround missing deps in ffmpeg-devel 
-%{?_with_external_ffmpeg:BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804, libraw1394-devel}
-
+%if 0%{?_with_external_ffmpeg:1}
+BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
+# HACKS to workaround missing deps in ffmpeg-devel
+BuildRequires: libraw1394-devel libtheora-devel libvorbis-devel
+%endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
 BuildRequires:  libdca-devel
