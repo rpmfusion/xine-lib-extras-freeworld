@@ -15,9 +15,11 @@ License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
 Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz2
-Patch0:         xine-lib-1.1.3-optflags.patch
-Patch6:         xine-lib-1.1.1-deepbind-939.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+Patch0: xine-lib-1.1.3-optflags.patch
+Patch6: xine-lib-1.1.1-deepbind-939.patch
+Patch100: xine-lib-1.1.15-ffmpeg-bits_per_sample.patch
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
@@ -63,8 +65,10 @@ will automatically regcognize and use these additional codecs.
 touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 %patch0 -p1 -b .optflags
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
-# Patch6 needed at least when compiling with external ffmpeg, #939.
+# Patch1 needed at least when compiling with external ffmpeg, #939.
 %patch6 -p1 -b .deepbind
+# ffmpeg api: bits_per_sample->bits_per_coded_sample
+%patch100 -p1 -b .ffmpeg_bits_per_sample
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
@@ -181,7 +185,7 @@ rm -rf %{buildroot}
 
 %changelog
 * Wed Dec 17 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-5
-- respin
+- ffmpeg bits_per_sample patch 
 
 * Thu Sep 25 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-4
 - Obsoletes: xine-lib-moles < 1.1.15-2
