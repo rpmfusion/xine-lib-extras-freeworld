@@ -102,7 +102,8 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
     --with-external-libmad \
     --with-external-libdts
 
-make %{?_smp_mflags}
+#make %{?_smp_mflags}
+make
 
 
 %install
