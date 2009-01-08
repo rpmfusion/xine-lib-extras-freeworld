@@ -1,7 +1,7 @@
 # TODO:
 # - external dvdnav - not compatible as of 1.1.11 and 4.1.1
 
-%define abiver  1.24
+%define abiver  1.25
 
 %if 0%{?fedora} > 6
 %define _with_external_ffmpeg --with-external-ffmpeg
@@ -9,21 +9,26 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.15
-Release:        4%{?dist}
+Version:        1.1.16
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
 Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz2
-Patch0:         xine-lib-1.1.3-optflags.patch
-Patch6:         xine-lib-1.1.1-deepbind-939.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+Patch0: xine-lib-1.1.3-optflags.patch
+Patch6: xine-lib-1.1.1-deepbind-939.patch
+Patch100: xine-lib-1.1.16-ffmpeg_api.patch
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
-# External libs
-%{?_with_external_ffmpeg:BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804}
+%if 0%{?_with_external_ffmpeg:1}
+BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
+# HACKS to workaround missing deps in ffmpeg-devel
+# BuildRequires:  dirac-devel libraw1394-devel libtheora-devel libvorbis-devel
+%endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
 BuildRequires:  libdca-devel
@@ -60,8 +65,10 @@ will automatically regcognize and use these additional codecs.
 touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 %patch0 -p1 -b .optflags
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
-# Patch6 needed at least when compiling with external ffmpeg, #939.
+# Patch1 needed at least when compiling with external ffmpeg, #939.
 %patch6 -p1 -b .deepbind
+
+%patch100 -p1 -b .ffmpeg_api
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
@@ -109,18 +116,19 @@ rm -rf %{buildroot}%{_datadir}
 rm -rf %{buildroot}%{_libdir}/lib*
 rm -rf %{buildroot}%{_libdir}/pkgconfig
 
+#xineplug_dmx_mpeg
+#xineplug_dmx_mpeg_block
+#xineplug_dmx_mpeg_ts
+#xineplug_dmx_mpeg_elem
+#xineplug_dmx_mpeg_pes
+#xineplug_dmx_yuv4mpeg2
+
 # Plugins - credits go to the SuSE RPM maintainer, congrats
 cat > plugins << EOF
 #
 # libmad and MPEG related plugins
 xineplug_decode_mad
 xineplug_decode_mpeg2
-xineplug_dmx_mpeg
-xineplug_dmx_mpeg_block
-xineplug_dmx_mpeg_ts
-xineplug_dmx_mpeg_elem
-xineplug_dmx_mpeg_pes
-xineplug_dmx_yuv4mpeg2
 xineplug_inp_vcd
 xineplug_inp_vcdo
 #
@@ -177,6 +185,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Jan 07 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16-1
+- xine-lib-1.1.16
+
+* Wed Dec 17 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-5
+- ffmpeg bits_per_sample patch 
+
 * Thu Sep 25 2008 Rex Dieter <rdieter@fedoraproject.org> - 1.1.15-4
 - Obsoletes: xine-lib-moles < 1.1.15-2
 
