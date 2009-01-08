@@ -4,13 +4,13 @@
 %define abiver  1.25
 
 %if 0%{?fedora} > 6
-%define _with_external_ffmpeg --with-external-ffmpeg
+#define _with_external_ffmpeg --with-external-ffmpeg
 %endif
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.16
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -19,7 +19,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0: xine-lib-1.1.3-optflags.patch
 Patch6: xine-lib-1.1.1-deepbind-939.patch
-Patch100: xine-lib-1.1.16-ffmpeg_api.patch
+# http://hg.debian.org/hg/xine-lib/xine-lib?cmd=changeset;node=c20ec3a8802d8f71d4ad9dc26a413716efe2d71a;style=raw
+Patch100: xine-lib-1.1.16-internal_ffmpeg.patch
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
@@ -68,7 +69,7 @@ touch -r m4/optimizations.m4.stamp m4/optimizations.m4
 # Patch1 needed at least when compiling with external ffmpeg, #939.
 %patch6 -p1 -b .deepbind
 
-%patch100 -p1 -b .ffmpeg_api
+%patch100 -p1 -b .internal_ffmpeg
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
@@ -185,6 +186,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jan 08 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16-2
+- drop ffmpeg_api patch (not needed)
+- internal_ffmpeg patch
+
 * Wed Jan 07 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16-1
 - xine-lib-1.1.16
 
