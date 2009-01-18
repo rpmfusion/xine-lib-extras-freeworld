@@ -43,6 +43,7 @@ BuildRequires:  libXext-devel
 BuildRequires:  libXinerama-devel
 # vcdimager reads and writes MPEG
 BuildRequires:  vcdimager-devel >= 0.7.23
+BuildRequires:  sed
 # Obsolete DXR3 deps, better handled by ffmpeg
 BuildConflicts: rte-devel
 BuildConflicts: libfame-devel
