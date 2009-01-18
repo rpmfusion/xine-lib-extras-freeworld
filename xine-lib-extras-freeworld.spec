@@ -4,13 +4,14 @@
 %define abiver  1.25
 
 %if 0%{?fedora} > 6
-#define _with_external_ffmpeg --with-external-ffmpeg
+%define _with_external_ffmpeg --with-external-ffmpeg
+%define _with_external_libfaad --with-external-libfaad
 %endif
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.16
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -25,6 +26,9 @@ Patch100: xine-lib-1.1.16-internal_ffmpeg.patch
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
+%if 0%{?_with_external_libfaad:1}
+BuildRequires:  faad2-devel
+%endif
 %if 0%{?_with_external_ffmpeg:1}
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
 # HACKS to workaround missing deps in ffmpeg-devel
@@ -39,6 +43,7 @@ BuildRequires:  libXext-devel
 BuildRequires:  libXinerama-devel
 # vcdimager reads and writes MPEG
 BuildRequires:  vcdimager-devel >= 0.7.23
+BuildRequires:  sed
 # Obsolete DXR3 deps, better handled by ffmpeg
 BuildConflicts: rte-devel
 BuildConflicts: libfame-devel
@@ -66,8 +71,8 @@ will automatically regcognize and use these additional codecs.
 touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 %patch0 -p1 -b .optflags
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
-# Patch1 needed at least when compiling with external ffmpeg, #939.
-%patch6 -p1 -b .deepbind
+# when compiling with external ffmpeg and internal libfaad #939.
+#patch6 -p1 -b .deepbind
 
 %patch100 -p1 -b .internal_ffmpeg
 
@@ -186,6 +191,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Jan 18 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16-3
+- drop deepbind patch
+- --with-external-libfaad (fedora)
+
 * Thu Jan 08 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16-2
 - drop ffmpeg_api patch (not needed)
 - internal_ffmpeg patch
