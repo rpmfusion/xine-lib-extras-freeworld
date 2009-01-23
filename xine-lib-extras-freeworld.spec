@@ -187,6 +187,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jan 23 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.1-1
+- xine-lib-1.1.16.1
+
 * Sun Jan 18 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16-3
 - drop deepbind patch
 - --with-external-libfaad (fedora)
