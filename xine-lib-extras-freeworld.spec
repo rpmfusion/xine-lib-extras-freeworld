@@ -10,8 +10,8 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.16
-Release:        3%{?dist}
+Version:        1.1.16.1
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -20,8 +20,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0: xine-lib-1.1.3-optflags.patch
 Patch6: xine-lib-1.1.1-deepbind-939.patch
-# http://hg.debian.org/hg/xine-lib/xine-lib?cmd=changeset;node=c20ec3a8802d8f71d4ad9dc26a413716efe2d71a;style=raw
-Patch100: xine-lib-1.1.16-internal_ffmpeg.patch
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
@@ -73,8 +71,6 @@ touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
 # when compiling with external ffmpeg and internal libfaad #939.
 #patch6 -p1 -b .deepbind
-
-%patch100 -p1 -b .internal_ffmpeg
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
@@ -191,6 +187,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jan 23 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.1-1
+- xine-lib-1.1.16.1
+
 * Sun Jan 18 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16-3
 - drop deepbind patch
 - --with-external-libfaad (fedora)
