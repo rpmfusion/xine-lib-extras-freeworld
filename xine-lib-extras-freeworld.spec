@@ -11,7 +11,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.16.2
-Release:        1%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -47,7 +47,7 @@ BuildConflicts: rte-devel
 BuildConflicts: libfame-devel
 
 Requires:       vcdimager >= 0.7.23
-Requires:       xine-lib(plugin-abi) = %{abiver}
+Requires:       xine-lib(plugin-abi)%{?_isa} = %{abiver}
 
 # obsolete old livna package
 Provides:       xine-lib-extras-nonfree = %{version}-%{release}
@@ -187,6 +187,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Mar 16 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.2-3
+- Requires: xine-lib(plugin-abi)%%{?_isa} = ...
+
+* Thu Mar 12 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.2-2
+- respin for newer rpm/hashes
+
 * Tue Feb 10 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.2-1
 - xine-lib-1.1.16.2
 
