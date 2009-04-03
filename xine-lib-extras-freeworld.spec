@@ -1,7 +1,7 @@
 # TODO:
 # - external dvdnav - not compatible as of 1.1.11 and 4.1.1
 
-%define abiver  1.25
+%define plugin_abi  1.26
 
 %if 0%{?fedora} > 6
 %define _with_external_ffmpeg --with-external-ffmpeg
@@ -10,8 +10,8 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.16.2
-Release:        4%{?dist}
+Version:        1.1.16.3
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -47,7 +47,7 @@ BuildConflicts: rte-devel
 BuildConflicts: libfame-devel
 
 Requires:       vcdimager >= 0.7.23
-Requires:       xine-lib(plugin-abi)%{?_isa} = %{abiver}
+Requires:       xine-lib(plugin-abi)%{?_isa} = %{plugin_abi}
 
 # obsolete old livna package
 Provides:       xine-lib-extras-nonfree = %{version}-%{release}
@@ -182,11 +182,14 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc doc/README.dxr3 doc/README.network_dvd
-%{_libdir}/xine/plugins/%{abiver}/xineplug_*.so
-%{_libdir}/xine/plugins/%{abiver}/post/xineplug_*.so
+%{_libdir}/xine/plugins/%{plugin_abi}/xineplug_*.so
+%{_libdir}/xine/plugins/%{plugin_abi}/post/xineplug_*.so
 
 
 %changelog
+* Fri Apr 03 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.3-1
+- xine-lib-1.1.16.3, plugin-abi 1.26
+
 * Fri Mar 27 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.2-4
 - rebuild (faad)
 
