@@ -11,7 +11,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.17
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -187,6 +187,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jan 22 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.17-2
+- rebuild (libcdio)
+
 * Wed Dec 02 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.17-1
 - xine-lib-1.1.17, plugin-abi 1.27
 
