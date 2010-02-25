@@ -1,7 +1,7 @@
 # TODO:
 # - external dvdnav - not compatible as of 1.1.11 and 4.1.1
 
-%define plugin_abi  1.27
+%define plugin_abi  1.28
 
 %if 0%{?fedora} > 6
 %define _with_external_ffmpeg --with-external-ffmpeg
@@ -10,8 +10,8 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.17
-Release:        2%{?dist}
+Version:        1.1.18
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -21,6 +21,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0: xine-lib-1.1.3-optflags.patch
 Patch6: xine-lib-1.1.1-deepbind-939.patch
 
+## upstreamable patches
+Patch50: xine-lib-1.1.18-dxr3_no_compat_c.patch
+
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
@@ -29,8 +32,6 @@ BuildRequires:  faad2-devel
 %endif
 %if 0%{?_with_external_ffmpeg:1}
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
-# HACKS to workaround missing deps in ffmpeg-devel
-# BuildRequires:  dirac-devel libraw1394-devel libtheora-devel libvorbis-devel
 %endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
@@ -71,6 +72,8 @@ touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
 # when compiling with external ffmpeg and internal libfaad #939.
 #patch6 -p1 -b .deepbind
+
+%patch50 -p1 -b .dxr3_no_compat_c
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
@@ -187,6 +190,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Feb 24 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-1
+- xine-lib-1.1.18, plugin-abi 1.28
+
 * Fri Jan 22 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.17-2
 - rebuild (libcdio)
 
