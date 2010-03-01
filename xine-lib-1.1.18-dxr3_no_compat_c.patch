@@ -6,7 +6,7 @@ diff -up xine-lib-1.1.18/src/dxr3/dxr3_decode_spu.c.no_compat_c xine-lib-1.1.18/
  #include "dxr3.h"
  
 -#include "compat.c"
-+/* #include "compat.c" */
++#include "compat.h"
  
  #define MAX_SPU_STREAMS 32
  
@@ -18,7 +18,7 @@ diff -up xine-lib-1.1.18/src/dxr3/dxr3_decode_video.c.no_compat_c xine-lib-1.1.1
  #include "dxr3.h"
  
 -#include "compat.c"
-+/* #include "compat.c" */
++#include "compat.h"
  
  /* once activated, we wait for this amount of missing pan&scan info
   * before disabling it again */
@@ -30,7 +30,7 @@ diff -up xine-lib-1.1.18/src/dxr3/video_out_dxr3.c.no_compat_c xine-lib-1.1.18/s
  #include "video_out_dxr3.h"
  
 -#include "compat.c"
-+/* #include "compat.c" */
++#include "compat.h"
  
  /* the amount of extra time we give the card for decoding */
  #define DECODE_PIPE_PREBUFFER 10000

@@ -11,7 +11,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.18
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -190,6 +190,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Mar 01 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-2
+- better dxr3_no_compat_c.patch (s/compat.c/compat.h/)
+
 * Wed Feb 24 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-1
 - xine-lib-1.1.18, plugin-abi 1.28
 
