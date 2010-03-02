@@ -11,18 +11,18 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.18
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
 Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz2
+Source1:        http://downloads.sourceforge.net/xine/compat.c
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0: xine-lib-1.1.3-optflags.patch
 Patch6: xine-lib-1.1.1-deepbind-939.patch
 
 ## upstreamable patches
-Patch50: xine-lib-1.1.18-dxr3_no_compat_c.patch
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
@@ -67,13 +67,14 @@ will automatically regcognize and use these additional codecs.
 
 %prep
 %setup -q -n xine-lib-%{version}
+
+install -p -m644 %{SOURCE1} src/dxr3/compat.c
+
 touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 %patch0 -p1 -b .optflags
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
 # when compiling with external ffmpeg and internal libfaad #939.
 #patch6 -p1 -b .deepbind
-
-%patch50 -p1 -b .dxr3_no_compat_c
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
@@ -190,6 +191,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Mar 02 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-3
+- get missing/upstream compat.c
+
 * Mon Mar 01 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-2
 - better dxr3_no_compat_c.patch (s/compat.c/compat.h/)
 
