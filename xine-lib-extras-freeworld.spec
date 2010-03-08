@@ -10,13 +10,12 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.18
-Release:        3%{?dist}
+Version:        1.1.18.1
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
 Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz2
-Source1:        http://downloads.sourceforge.net/xine/compat.c
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0: xine-lib-1.1.3-optflags.patch
@@ -67,8 +66,6 @@ will automatically regcognize and use these additional codecs.
 
 %prep
 %setup -q -n xine-lib-%{version}
-
-install -p -m644 %{SOURCE1} src/dxr3/compat.c
 
 touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 %patch0 -p1 -b .optflags
@@ -191,6 +188,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Mar 07 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18.1-1
+- xine-lib-1.1.18.1
+
 * Tue Mar 02 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-3
 - get missing/upstream compat.c
 
