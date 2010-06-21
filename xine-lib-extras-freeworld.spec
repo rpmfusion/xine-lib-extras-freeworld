@@ -1,7 +1,7 @@
 # TODO:
 # - external dvdnav - not compatible as of 1.1.11 and 4.1.1
 
-%define plugin_abi  1.26
+%define plugin_abi  1.28
 
 %if 0%{?fedora} > 6
 %define _with_external_ffmpeg --with-external-ffmpeg
@@ -10,8 +10,8 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.16.3
-Release:        2%{?dist}
+Version:        1.1.18.1
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -21,6 +21,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Patch0: xine-lib-1.1.3-optflags.patch
 Patch6: xine-lib-1.1.1-deepbind-939.patch
 
+## upstreamable patches
+
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
@@ -29,8 +31,6 @@ BuildRequires:  faad2-devel
 %endif
 %if 0%{?_with_external_ffmpeg:1}
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
-# HACKS to workaround missing deps in ffmpeg-devel
-# BuildRequires:  dirac-devel libraw1394-devel libtheora-devel libvorbis-devel
 %endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
@@ -66,6 +66,7 @@ will automatically regcognize and use these additional codecs.
 
 %prep
 %setup -q -n xine-lib-%{version}
+
 touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 %patch0 -p1 -b .optflags
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
@@ -187,6 +188,24 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Mar 07 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18.1-1
+- xine-lib-1.1.18.1
+
+* Tue Mar 02 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-3
+- get missing/upstream compat.c
+
+* Mon Mar 01 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-2
+- better dxr3_no_compat_c.patch (s/compat.c/compat.h/)
+
+* Wed Feb 24 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-1
+- xine-lib-1.1.18, plugin-abi 1.28
+
+* Fri Jan 22 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.17-2
+- rebuild (libcdio)
+
+* Wed Dec 02 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.17-1
+- xine-lib-1.1.17, plugin-abi 1.27
+
 * Thu Jul 02 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.3-2
 - rebuild (DirectFB)
 
