@@ -1,7 +1,5 @@
-# TODO:
-# - external dvdnav - not compatible as of 1.1.11 and 4.1.1
 
-%define plugin_abi  1.28
+%define plugin_abi  1.29
 
 %if 0%{?fedora} > 6
 %define _with_external_ffmpeg --with-external-ffmpeg
@@ -10,7 +8,7 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.18.1
+Version:        1.1.19
 Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
@@ -188,6 +186,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Jul 25 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.19-1
+- xine-lib-1.1.19
+
 * Sun Mar 07 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18.1-1
 - xine-lib-1.1.18.1
 
