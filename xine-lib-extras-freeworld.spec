@@ -9,7 +9,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.19
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -186,6 +186,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Sep 26 2011 Nicolas Chauvet <kwizart@gmail.com> - 1.1.19-2
+- Rebuilt for FFmpeg-0.8
+
 * Sun Jul 25 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.19-1
 - xine-lib-1.1.19
 
