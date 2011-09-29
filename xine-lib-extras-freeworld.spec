@@ -9,7 +9,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.19
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -17,7 +17,8 @@ Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0: xine-lib-1.1.3-optflags.patch
-Patch6: xine-lib-1.1.1-deepbind-939.patch
+Patch1: xine-lib-1.1.1-deepbind-939.patch
+Patch2: xine-lib-1.1.19-ffmpeg08.patch
 
 ## upstreamable patches
 
@@ -69,7 +70,8 @@ touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
 %patch0 -p1 -b .optflags
 touch -r m4/optimizations.m4.stamp m4/optimizations.m4
 # when compiling with external ffmpeg and internal libfaad #939.
-#patch6 -p1 -b .deepbind
+#patch1 -p1 -b .deepbind
+%patch2 -p1 -b .ffmpeg08
 
 # Avoid standard rpaths on lib64 archs:
 sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
@@ -186,6 +188,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Sep 29 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.19-3
+- fix build with FFmpeg 0.8 (#1957)
+
 * Mon Sep 26 2011 Nicolas Chauvet <kwizart@gmail.com> - 1.1.19-2
 - Rebuilt for FFmpeg-0.8
 
