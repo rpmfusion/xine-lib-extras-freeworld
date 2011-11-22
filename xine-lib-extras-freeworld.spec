@@ -1,5 +1,5 @@
 
-%define plugin_abi  1.29
+%define plugin_abi  1.30
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
@@ -191,6 +191,7 @@ rm -rf %{buildroot}
 - run autogen.sh in %%prep, don't patch generated files
 - drop ffmpeg08 patch, fixed upstream
 - update configure flags (drop nonexistent ones, fix renamed ones)
+- plugin ABI is now 1.30
 
 * Thu Sep 29 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.19-3
 - fix build with FFmpeg 0.8 (#1957)
