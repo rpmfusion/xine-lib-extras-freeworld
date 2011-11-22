@@ -1,36 +1,29 @@
 
 %define plugin_abi  1.29
 
-%if 0%{?fedora} > 6
-%define _with_external_ffmpeg --with-external-ffmpeg
-%define _with_external_libfaad --with-external-libfaad
-%endif
-
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.19
-Release:        3%{?dist}
+Version:        1.1.20
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
-Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz2
+Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.xz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Patch0: xine-lib-1.1.3-optflags.patch
-Patch1: xine-lib-1.1.1-deepbind-939.patch
-Patch2: xine-lib-1.1.19-ffmpeg08.patch
+Patch0:         xine-lib-1.1.19-no_autopoint.patch
+Patch1:         xine-lib-1.1.4-optflags.patch
+# fix system libdvdnav support to also link libdvdread
+# otherwise, we get unresolved symbols in the spudec plugin
+Patch2:         xine-lib-1.1.20-link-libdvdread.patch
 
 ## upstreamable patches
 
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
-%if 0%{?_with_external_libfaad:1}
 BuildRequires:  faad2-devel
-%endif
-%if 0%{?_with_external_ffmpeg:1}
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
-%endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
 BuildRequires:  libdca-devel
@@ -41,6 +34,8 @@ BuildRequires:  libXinerama-devel
 # vcdimager reads and writes MPEG
 BuildRequires:  vcdimager-devel >= 0.7.23
 BuildRequires:  sed
+BuildRequires:  libdvdnav-devel
+BuildRequires:  libdvdread-devel
 # Obsolete DXR3 deps, better handled by ffmpeg
 BuildConflicts: rte-devel
 BuildConflicts: libfame-devel
@@ -66,15 +61,13 @@ will automatically regcognize and use these additional codecs.
 %prep
 %setup -q -n xine-lib-%{version}
 
-touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
-%patch0 -p1 -b .optflags
-touch -r m4/optimizations.m4.stamp m4/optimizations.m4
-# when compiling with external ffmpeg and internal libfaad #939.
-#patch1 -p1 -b .deepbind
-%patch2 -p1 -b .ffmpeg08
+%patch0 -p1 -b .no_autopoint
+# extra work for to omit old libtool-related crud
+rm -f configure ltmain.sh libtool m4/libtool.m4 m4/ltoptions.m4 m4/ltversion.m4
+%patch1 -p1 -b .optflags
+%patch2 -p1 -b .link-libdvdread
 
-# Avoid standard rpaths on lib64 archs:
-sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
+./autogen.sh noconfig
 
 
 %build
@@ -85,24 +78,24 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
     --disable-opengl \
     --disable-xvmc \
     --disable-aalib \
-    --disable-caca \
-    --disable-sdl \
-    --disable-rte \
-    --disable-libfame \
-    --disable-speex \
-    --disable-flac \
     --disable-mng \
-    --disable-imagemagick \
-    --disable-freetype \
-    --disable-alsa \
-    --disable-esd \
-    --disable-arts \
     --disable-gnomevfs \
     --disable-gdkpixbuf \
     --disable-samba \
-    %{?_with_external_ffmpeg} \
+    --with-external-ffmpeg \
+    --without-caca \
+    --without-sdl \
+    --without-speex \
+    --without-libflac \
     --with-external-a52dec \
     --with-external-libmad \
+    --without-imagemagick \
+    --without-freetype \
+    --without-alsa \
+    --without-esound \
+    --without-arts \
+    --with-external-dvdnav \
+    --with-external-libfaad \
     --with-external-libdts
 
 make %{?_smp_mflags}
@@ -188,6 +181,17 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Nov 22 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-1
+- update to 1.1.20 (matches Fedora xine-lib)
+- use .xz tarball
+- drop old conditionals
+- drop unused deepbind patch
+- use the system libdvdnav (and libdvdread) instead of the bundled one
+- fix system libdvdnav support to also link libdvdread
+- run autogen.sh in %%prep, don't patch generated files
+- drop ffmpeg08 patch, fixed upstream
+- update configure flags (drop nonexistent ones, fix renamed ones)
+
 * Thu Sep 29 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.19-3
 - fix build with FFmpeg 0.8 (#1957)
 
