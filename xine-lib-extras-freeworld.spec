@@ -17,8 +17,7 @@ Patch1:         xine-lib-1.1.4-optflags.patch
 # otherwise, we get unresolved symbols in the spudec plugin
 Patch2:         xine-lib-1.1.20-link-libdvdread.patch
 
-## upstreamable patches
-
+BuildRequires:  autoconf automake libtool
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
