@@ -16,7 +16,7 @@ Patch1:         xine-lib-1.1.4-optflags.patch
 # fix system libdvdnav support to also link libdvdread
 # otherwise, we get unresolved symbols in the spudec plugin
 Patch2:         xine-lib-1.1.20-link-libdvdread.patch
-# don't check for a52dec_internal.h, fixes system a52dec support
+# don't check for and include a52_internal.h, fixes system a52dec support
 Patch3:         xine-lib-1.1.20-system-a52dec.patch
 
 BuildRequires:  autoconf automake libtool
@@ -184,7 +184,7 @@ rm -rf %{buildroot}
 
 %changelog
 * Thu Nov 24 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-2
-- don't check for a52dec_internal.h, fixes system a52dec support
+- don't check for and include a52_internal.h, fixes system a52dec support
 
 * Tue Nov 22 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-1
 - update to 1.1.20 (matches Fedora xine-lib)
