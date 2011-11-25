@@ -4,7 +4,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.20
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -80,6 +80,7 @@ rm -f configure ltmain.sh libtool m4/libtool.m4 m4/ltoptions.m4 m4/ltversion.m4
     --disable-opengl \
     --disable-xvmc \
     --disable-aalib \
+    --disable-musepack \
     --disable-mng \
     --disable-gnomevfs \
     --disable-gdkpixbuf \
@@ -183,6 +184,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Nov 25 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-3
+- --disable-musepack, avoids building the unused bundled libmusepack (the
+  musepack plugin (using the system lib) is included in the Fedora xine-lib)
+
 * Thu Nov 24 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-2
 - don't check for and include a52_internal.h, fixes system a52dec support
 
