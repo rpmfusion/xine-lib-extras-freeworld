@@ -3,8 +3,8 @@
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.20
-Release:        3%{?dist}
+Version:        1.1.20.1
+Release:        1%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -13,11 +13,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0:         xine-lib-1.1.19-no_autopoint.patch
 Patch1:         xine-lib-1.1.4-optflags.patch
-# fix system libdvdnav support to also link libdvdread
-# otherwise, we get unresolved symbols in the spudec plugin
-Patch2:         xine-lib-1.1.20-link-libdvdread.patch
-# don't check for and include a52_internal.h, fixes system a52dec support
-Patch3:         xine-lib-1.1.20-system-a52dec.patch
 
 BuildRequires:  autoconf automake libtool
 BuildRequires:  pkgconfig
@@ -66,8 +61,6 @@ will automatically regcognize and use these additional codecs.
 # extra work for to omit old libtool-related crud
 rm -f configure ltmain.sh libtool m4/libtool.m4 m4/ltoptions.m4 m4/ltversion.m4
 %patch1 -p1 -b .optflags
-%patch2 -p1 -b .link-libdvdread
-%patch3 -p1 -b .system-a52dec
 
 ./autogen.sh noconfig
 
@@ -184,6 +177,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jan 03 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 1.1.20.1-1
+- update to 1.1.20.1 (bugfix release, matches Fedora xine-lib)
+- drop upstreamed link-libdvdread and system-a52dec patches
+
 * Fri Nov 25 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-3
 - --disable-musepack, avoids building the unused bundled libmusepack (the
   musepack plugin (using the system lib) is included in the Fedora xine-lib)
