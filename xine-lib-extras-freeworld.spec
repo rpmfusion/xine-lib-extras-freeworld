@@ -4,7 +4,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.21
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -38,6 +38,8 @@ BuildConflicts: libfame-devel
 
 Requires:       vcdimager >= 0.7.23
 Requires:       xine-lib(plugin-abi)%{?_isa} = %{plugin_abi}
+# DVD plugin moved to Fedora (not encumbered)
+Requires:       xine-lib >= 1.1.21-2
 
 # obsolete old livna package
 Provides:       xine-lib-extras-nonfree = %{version}-%{release}
@@ -141,9 +143,6 @@ xineplug_decode_dxr3_spu
 xineplug_decode_dxr3_video
 xineplug_vo_out_dxr3
 #
-# DVD reading
-xineplug_inp_dvd
-#
 # http://www.videolan.org/dtsdec.html
 xineplug_decode_dts
 #
@@ -171,12 +170,15 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc doc/README.dxr3 doc/README.network_dvd
+%doc doc/README.dxr3
 %{_libdir}/xine/plugins/%{plugin_abi}/xineplug_*.so
 %{_libdir}/xine/plugins/%{plugin_abi}/post/xineplug_*.so
 
 
 %changelog
+* Mon Jul 16 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 1.1.21-3
+- drop DVD plugin, not encumbered (by itself), moved to Fedora
+
 * Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-2
 - Rebuilt for FFmpeg
 
