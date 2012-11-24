@@ -4,7 +4,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.21
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -176,6 +176,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Nov 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-4
+- Rebuilt for FFmpeg 1.0
+
 * Mon Jul 16 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 1.1.21-3
 - drop DVD plugin, not encumbered (by itself), moved to Fedora
 
