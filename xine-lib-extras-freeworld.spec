@@ -4,7 +4,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.21
-Release:        6%{?dist}
+Release:        7%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -176,6 +176,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Aug 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-7
+- Rebuilt for FFmpeg 2.0.x
+
 * Sun May 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-6
 - Rebuilt for x264/FFmpeg
 
