@@ -4,7 +4,7 @@
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
 Version:        1.1.21
-Release:        7%{?dist}
+Release:        8%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
@@ -13,6 +13,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0:         xine-lib-1.1.19-no_autopoint.patch
 Patch1:         xine-lib-1.1.4-optflags.patch
+Patch2:         xine-lib-1.1.21-ffmpeg20.patch
 
 BuildRequires:  autoconf automake libtool
 BuildRequires:  pkgconfig
@@ -63,6 +64,7 @@ will automatically regcognize and use these additional codecs.
 # extra work for to omit old libtool-related crud
 rm -f configure ltmain.sh libtool m4/libtool.m4 m4/ltoptions.m4 m4/ltversion.m4
 %patch1 -p1 -b .optflags
+%patch2 -p1 -b .ffmpeg20
 
 ./autogen.sh noconfig
 
@@ -176,6 +178,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Aug 28 2013 Xavier Bachelot <xavier@bachelot.org> - 1.1.21-8
+- Fix build for ffmpeg 2.0.
+
 * Thu Aug 15 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-7
 - Rebuilt for FFmpeg 2.0.x
 
