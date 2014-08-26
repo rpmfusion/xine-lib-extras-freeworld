@@ -1,37 +1,25 @@
-# TODO:
-# - external dvdnav - not compatible as of 1.1.11 and 4.1.1
 
-%define plugin_abi  1.26
-
-%if 0%{?fedora} > 6
-%define _with_external_ffmpeg --with-external-ffmpeg
-%define _with_external_libfaad --with-external-libfaad
-%endif
+%define plugin_abi  1.30
 
 Name:           xine-lib-extras-freeworld
 Summary:        Extra codecs for the Xine multimedia library
-Version:        1.1.16.3
-Release:        1%{?dist}
+Version:        1.1.21
+Release:        6%{?dist}
 License:        GPLv2+
 Group:          System Environment/Libraries
 URL:            http://xinehq.de/
-Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.bz2
+Source0:        http://downloads.sourceforge.net/xine/xine-lib-%{version}.tar.xz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Patch0: xine-lib-1.1.3-optflags.patch
-Patch6: xine-lib-1.1.1-deepbind-939.patch
+Patch0:         xine-lib-1.1.19-no_autopoint.patch
+Patch1:         xine-lib-1.1.4-optflags.patch
 
+BuildRequires:  autoconf automake libtool
 BuildRequires:  pkgconfig
 BuildRequires:  zlib-devel
 BuildRequires:  gawk
-%if 0%{?_with_external_libfaad:1}
 BuildRequires:  faad2-devel
-%endif
-%if 0%{?_with_external_ffmpeg:1}
 BuildRequires:  ffmpeg-devel >= 0.4.9-0.22.20060804
-# HACKS to workaround missing deps in ffmpeg-devel
-# BuildRequires:  dirac-devel libraw1394-devel libtheora-devel libvorbis-devel
-%endif
 BuildRequires:  a52dec-devel
 BuildRequires:  libmad-devel
 BuildRequires:  libdca-devel
@@ -42,12 +30,16 @@ BuildRequires:  libXinerama-devel
 # vcdimager reads and writes MPEG
 BuildRequires:  vcdimager-devel >= 0.7.23
 BuildRequires:  sed
+BuildRequires:  libdvdnav-devel
+BuildRequires:  libdvdread-devel
 # Obsolete DXR3 deps, better handled by ffmpeg
 BuildConflicts: rte-devel
 BuildConflicts: libfame-devel
 
 Requires:       vcdimager >= 0.7.23
 Requires:       xine-lib(plugin-abi)%{?_isa} = %{plugin_abi}
+# DVD plugin moved to Fedora (not encumbered)
+Requires:       xine-lib >= 1.1.21-2
 
 # obsolete old livna package
 Provides:       xine-lib-extras-nonfree = %{version}-%{release}
@@ -66,14 +58,13 @@ will automatically regcognize and use these additional codecs.
 
 %prep
 %setup -q -n xine-lib-%{version}
-touch -r m4/optimizations.m4 m4/optimizations.m4.stamp
-%patch0 -p1 -b .optflags
-touch -r m4/optimizations.m4.stamp m4/optimizations.m4
-# when compiling with external ffmpeg and internal libfaad #939.
-#patch6 -p1 -b .deepbind
 
-# Avoid standard rpaths on lib64 archs:
-sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
+%patch0 -p1 -b .no_autopoint
+# extra work for to omit old libtool-related crud
+rm -f configure ltmain.sh libtool m4/libtool.m4 m4/ltoptions.m4 m4/ltversion.m4
+%patch1 -p1 -b .optflags
+
+./autogen.sh noconfig
 
 
 %build
@@ -84,24 +75,25 @@ sed -i -e 's|"/lib /usr/lib\b|"/%{_lib} %{_libdir}|' configure
     --disable-opengl \
     --disable-xvmc \
     --disable-aalib \
-    --disable-caca \
-    --disable-sdl \
-    --disable-rte \
-    --disable-libfame \
-    --disable-speex \
-    --disable-flac \
+    --disable-musepack \
     --disable-mng \
-    --disable-imagemagick \
-    --disable-freetype \
-    --disable-alsa \
-    --disable-esd \
-    --disable-arts \
     --disable-gnomevfs \
     --disable-gdkpixbuf \
     --disable-samba \
-    %{?_with_external_ffmpeg} \
+    --with-external-ffmpeg \
+    --without-caca \
+    --without-sdl \
+    --without-speex \
+    --without-libflac \
     --with-external-a52dec \
     --with-external-libmad \
+    --without-imagemagick \
+    --without-freetype \
+    --without-alsa \
+    --without-esound \
+    --without-arts \
+    --with-external-dvdnav \
+    --with-external-libfaad \
     --with-external-libdts
 
 make %{?_smp_mflags}
@@ -151,9 +143,6 @@ xineplug_decode_dxr3_spu
 xineplug_decode_dxr3_video
 xineplug_vo_out_dxr3
 #
-# DVD reading
-xineplug_inp_dvd
-#
 # http://www.videolan.org/dtsdec.html
 xineplug_decode_dts
 #
@@ -181,12 +170,86 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc doc/README.dxr3 doc/README.network_dvd
+%doc doc/README.dxr3
 %{_libdir}/xine/plugins/%{plugin_abi}/xineplug_*.so
 %{_libdir}/xine/plugins/%{plugin_abi}/post/xineplug_*.so
 
 
 %changelog
+* Sun May 26 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-6
+- Rebuilt for x264/FFmpeg
+
+* Wed Jan 30 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-5
+- Rebuilt for ffmpeg
+
+* Sat Nov 24 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-4
+- Rebuilt for FFmpeg 1.0
+
+* Mon Jul 16 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 1.1.21-3
+- drop DVD plugin, not encumbered (by itself), moved to Fedora
+
+* Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.1.21-2
+- Rebuilt for FFmpeg
+
+* Sat Jun 23 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 1.1.21-1
+- update to 1.1.21 (bugfix release, matches Fedora xine-lib)
+
+* Fri Mar 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.1.20.1-2
+- Rebuilt
+
+* Tue Jan 03 2012 Kevin Kofler <Kevin@tigcc.ticalc.org> 1.1.20.1-1
+- update to 1.1.20.1 (bugfix release, matches Fedora xine-lib)
+- drop upstreamed link-libdvdread and system-a52dec patches
+
+* Fri Nov 25 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-3
+- --disable-musepack, avoids building the unused bundled libmusepack (the
+  musepack plugin (using the system lib) is included in the Fedora xine-lib)
+
+* Thu Nov 24 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-2
+- don't check for and include a52_internal.h, fixes system a52dec support
+
+* Tue Nov 22 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.20-1
+- update to 1.1.20 (matches Fedora xine-lib)
+- use .xz tarball
+- drop old conditionals
+- drop unused deepbind patch
+- use the system libdvdnav (and libdvdread) instead of the bundled one
+- fix system libdvdnav support to also link libdvdread
+- run autogen.sh in %%prep, don't patch generated files
+- drop ffmpeg08 patch, fixed upstream
+- update configure flags (drop nonexistent ones, fix renamed ones)
+- plugin ABI is now 1.30
+
+* Thu Sep 29 2011 Kevin Kofler <Kevin@tigcc.ticalc.org> - 1.1.19-3
+- fix build with FFmpeg 0.8 (#1957)
+
+* Mon Sep 26 2011 Nicolas Chauvet <kwizart@gmail.com> - 1.1.19-2
+- Rebuilt for FFmpeg-0.8
+
+* Sun Jul 25 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.19-1
+- xine-lib-1.1.19
+
+* Sun Mar 07 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18.1-1
+- xine-lib-1.1.18.1
+
+* Tue Mar 02 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-3
+- get missing/upstream compat.c
+
+* Mon Mar 01 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-2
+- better dxr3_no_compat_c.patch (s/compat.c/compat.h/)
+
+* Wed Feb 24 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.18-1
+- xine-lib-1.1.18, plugin-abi 1.28
+
+* Fri Jan 22 2010 Rex Dieter <rdieter@fedoraproject.org> - 1.1.17-2
+- rebuild (libcdio)
+
+* Wed Dec 02 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.17-1
+- xine-lib-1.1.17, plugin-abi 1.27
+
+* Thu Jul 02 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.3-2
+- rebuild (DirectFB)
+
 * Fri Apr 03 2009 Rex Dieter <rdieter@fedoraproject.org> - 1.1.16.3-1
 - xine-lib-1.1.16.3, plugin-abi 1.26
 
